@@ -29,7 +29,6 @@ jobs:
       - uses: cloudbees-io/checkout@v1
       - uses: docker://darinpope/tools-kitchen-sink:latest
         name: versions
-        kind: scan
         shell: sh
         run: |
           trivy --version
