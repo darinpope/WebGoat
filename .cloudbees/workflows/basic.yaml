@@ -48,8 +48,10 @@ jobs:
         kind: scan
         shell: sh
         run: |
+          echo "*** getting ready to trivy fs ***"
           pwd
-          trivy fs ${CLOUDBEES_WORKSPACE}
+          ls -l
+          trivy fs .
     needs:
       - test
   deploy-prod:
