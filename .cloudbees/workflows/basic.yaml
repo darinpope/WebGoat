@@ -48,6 +48,7 @@ jobs:
         kind: scan
         shell: sh
         run: |
+          pwd
           trivy fs ${CLOUDBEES_WORKSPACE}
     needs:
       - test
