@@ -1,0 +1,80 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: My automation
+on:
+  push:
+    branches:
+      - "**"
+jobs:
+  build:
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: build
+        kind: build
+        shell: sh
+        run: |
+          echo "build"
+  test:
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        kind: test
+        name: test
+        shell: sh
+        run: |
+          echo "test"
+    needs:
+      - build
+  scan:
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: scan
+        kind: scan
+        shell: sh
+        run: |
+          echo "scan"
+    needs:
+      - test
+  deploy-prod:
+    environment: Production
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: deploy
+        kind: deploy
+        shell: sh
+        run: |
+          echo "deploy Production"
+    needs:
+      - scan
+  deploy-pre-prod:
+    environment: PreProduction
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: deploy
+        kind: deploy
+        shell: sh
+        run: |
+          echo "deploy PreProduction"
+    needs:
+      - scan
+  deploy-uat:
+    environment: UAT
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: deploy
+        kind: deploy
+        shell: sh
+        run: |
+          echo "deploy UAT"
+    needs:
+      - scan
+  deploy-integration:
+    environment: Integration
+    steps:
+      - uses: docker://cgr.dev/chainguard/go:latest
+        name: deploy
+        kind: deploy
+        shell: sh
+        run: |
+          echo "deploy Integration"
+    needs:
+      - scan
