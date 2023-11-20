@@ -32,6 +32,14 @@ jobs:
         shell: sh
         run: |
           echo "scan"
+      - uses: docker://darinpope/tools-kitchen-sink:latest
+        name: versions
+        kind: scan
+        shell: sh
+        run: |
+          trivy --version
+          grype --version
+          syft --version
     needs:
       - test
   deploy-prod:
