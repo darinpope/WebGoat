@@ -6,6 +6,13 @@ on:
     branches:
       - "**"
 jobs:
+  checkout:
+    steps:
+      - uses: cloudbees-io/checkout@v1
+        with:
+          provider: github
+          repository: darinpope/WebGoat
+          ref: develop
   build:
     steps:
       - uses: docker://cgr.dev/chainguard/go:latest
@@ -14,6 +21,8 @@ jobs:
         shell: sh
         run: |
           echo "build"
+    needs:
+      - checkout
   test:
     steps:
       - uses: docker://cgr.dev/chainguard/go:latest
@@ -26,12 +35,6 @@ jobs:
       - build
   scan:
     steps:
-      - uses: docker://cgr.dev/chainguard/go:latest
-        name: scan
-        kind: scan
-        shell: sh
-        run: |
-          echo "scan"
       - uses: docker://darinpope/tools-kitchen-sink:latest
         name: versions
         kind: scan
@@ -40,6 +43,12 @@ jobs:
           trivy --version
           grype --version
           syft --version
+      - uses: docker://darinpope/tools-kitchen-sink:latest
+        name: filesystem scan
+        kind: scan
+        shell: sh
+        run: |
+          trivy fs ${CLOUDBEES_WORKSPACE}
     needs:
       - test
   deploy-prod:
