@@ -6,13 +6,6 @@ on:
     branches:
       - "**"
 jobs:
-  checkout:
-    steps:
-      - uses: cloudbees-io/checkout@v1
-        with:
-          provider: github
-          repository: darinpope/WebGoat
-          ref: develop
   build:
     steps:
       - uses: docker://cgr.dev/chainguard/go:latest
@@ -35,6 +28,7 @@ jobs:
       - build
   scan:
     steps:
+      - uses: cloudbees-io/checkout@v1
       - uses: docker://darinpope/tools-kitchen-sink:latest
         name: versions
         kind: scan
