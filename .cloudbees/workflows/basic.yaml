@@ -27,7 +27,6 @@ jobs:
   scan:
     steps:
       - uses: cloudbees-io/checkout@v1
-      - uses: darinpope/trivy-fs@v0.47.0
     needs:
       - test
   deploy-prod:
