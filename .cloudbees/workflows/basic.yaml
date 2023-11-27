@@ -13,7 +13,7 @@ jobs:
         kind: build
         shell: sh
         run: |
-          echo "build1"
+          echo "build2"
   test:
     steps:
       - uses: docker://cgr.dev/chainguard/go:latest
