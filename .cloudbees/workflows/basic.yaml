@@ -27,25 +27,7 @@ jobs:
   scan:
     steps:
       - uses: cloudbees-io/checkout@v1
-      - uses: docker://darinpope/tools-kitchen-sink:latest
-        name: versions
-        shell: sh
-        run: |
-          trivy --version
-          grype --version
-          syft --version
-      - uses: docker://darinpope/tools-kitchen-sink:latest
-        name: filesystem scan
-        kind: scan
-        shell: sh
-        run: |
-          echo "*** getting ready to trivy fs ***"
-          pwd
-          ls -l
-          trivy fs .
-      - uses: cloudbees-io/findsecbugs-sast-scan-code@v1
-        with:
-          language: "LANGUAGE_JAVA"
+      - uses: darinpope/trivy-fs@v0.47.0
     needs:
       - test
   deploy-prod:
