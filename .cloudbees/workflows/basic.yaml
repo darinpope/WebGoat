@@ -27,7 +27,10 @@ jobs:
   scan:
     steps:
       - uses: cloudbees-io/checkout@v1
-      - uses: darinpope/trivy-fs@v0.47.0
+      - uses: darinpope/trivy@v0.47.0
+        with:
+          command: filesystem
+          scan-target: .
     needs:
       - test
   deploy-prod:
